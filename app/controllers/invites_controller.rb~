@@ -1,0 +1,24 @@
+class InvitesController < ApplicationController
+ def index
+    @invites =current_user.invites
+
+    respond_to do |format|
+      format.html # index.html.erb
+      format.json { render json: @invites }
+    end
+  end
+
+  def create
+    @invite = current_user.invites.new(params[:invite])
+
+    respond_to do |format|
+      if @invite.save
+        format.html { redirect_to @invite, notice: 'Post was successfully created.' }
+        format.json { render json: @invite, status: :created, location: @invite }
+      else
+        format.html { render action: "new" }
+        format.json { render json: @invite.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+end
